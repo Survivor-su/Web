@@ -9,6 +9,11 @@ const routes = [
     path: '/warehouse',
     name: 'warehouse',//与index无关
     component: () => import('../views/WarehouseView.vue')
+  },
+  {
+    path: '/warehousearea',
+    name: 'warehousearea',//与index无关
+    component: () => import('../views/WarehouseAreaView.vue')
   }
 ]
 

@@ -10,14 +10,15 @@
       <el-container>
         <el-aside width="200px">
           <el-menu router default-active="2" class="el-menu-vertical-demo">
+            
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-s-home"></i>
-                <span>仓库信息</span>
+                <span>仓库管理</span>
               </template>
               <el-menu-item-group>
                 <el-menu-item index="warehouse">仓库信息</el-menu-item>
-                <el-menu-item index="1-2">库区信息</el-menu-item>
+                <el-menu-item index="warehousearea">库区信息</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 
