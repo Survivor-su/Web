@@ -1,5 +1,13 @@
 <template>
     <div>
+
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item>仓库管理</el-breadcrumb-item>
+            <el-breadcrumb-item>库区信息</el-breadcrumb-item>
+        </el-breadcrumb>
+
+        <el-divider></el-divider>
+
         <el-row>
             <el-col :span="2">
                 <el-button type="primary" @click="toAdd()">添加</el-button>
@@ -12,6 +20,7 @@
                 </div>
             </el-col>
         </el-row>
+
         <el-divider></el-divider>
 
         <el-table :data="tableData" stripe style="width: 100%">
@@ -79,14 +88,35 @@
 
                 <el-form-item label="选择仓库" :label-width="formLabelWidth">
                     <el-select v-model="warehouseArea.whId" placeholder="请选择仓库">
-                        <el-option v-for="(o,i) in warehouseList" :label="o.whName" :value="o.whId"></el-option>
+                        <el-option v-for="(o,i) in warehouseList" :label="o.whName" :value="o.whId"
+                            :disabled='o.whCapacity>o.waCapacity?false:true'>
+                            <span style="float: left">{{ o.whName }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <el-tag v-if="o.whCapacity-o.waCapacity>=o.whCapacity*0.7" type="success"
+                                style="float: right;  font-size: 13px">剩余容量:{{ o.whCapacity-o.waCapacity }}</el-tag>
+                            <el-tag v-else-if="o.whCapacity-o.waCapacity>=0" type="warning"
+                                style="float: right;  font-size: 13px">剩余容量:{{ o.whCapacity-o.waCapacity }}</el-tag>
+                            <el-tag v-else="o.whCapacity-o.waCapacity==0" style="float: right;  font-size: 13px">
+                                剩余容量:{{0}}</el-tag>
+                        </el-option>
                     </el-select>
                 </el-form-item>
-
+                <!-- 
+    <el-tag type="success">标签二</el-tag>
+<el-tag type="warning">标签四</el-tag>
+<el-tag type="danger">标签五</el-tag>
+ -->
                 <el-form-item label="库区名称" :label-width="formLabelWidth">
                     <el-input v-model="warehouseArea.waName" autocomplete="off" placeholder="请输入库区名称"></el-input>
                 </el-form-item>
-                 <el-form-item label="库区地址" :label-width="formLabelWidth">
+                <el-form-item label="库区容量" :label-width="formLabelWidth">
+                    <el-input-number :min="0" :step="100" v-for="o in warehouseList" v-if="o.whId==warehouseArea.whId"
+                        :max="o.whCapacity-o.waCapacity" v-model="warehouseArea.waCapacity" autocomplete="off">
+                    </el-input-number>
+                </el-form-item>
+                <!-- <el-form-item label="仓库可用容量" :label-width="formLabelWidth">
+                    <el-input v-model="warehouseArea.waAddr" autocomplete="off"></el-input>
+                </el-form-item> -->
+                <el-form-item label="库区地址" :label-width="formLabelWidth">
                     <el-input v-model="warehouseArea.waAddr" autocomplete="off" placeholder="请输入库区地址"></el-input>
                 </el-form-item>
                 <el-form-item label="库区备注" :label-width="formLabelWidth">
@@ -127,7 +157,7 @@ export default {
                 waCapacity: "",
                 waAvailableCapacity: "",
                 waNote: "",
-                waStatus: ""
+                waStatus: "",
             },
             editShow: false,
             useShow: false,
@@ -139,15 +169,15 @@ export default {
     methods: {
         toAdd() {
             this.addFormVisible = true
-            axios.get("http://localhost:9090/warehouse").then(res => {
-                this.warehouseList=res.data.list
+            axios.get("http://localhost:9090/warehouseCapacity").then(res => {
+                this.warehouseList = res.data.list
             })
         },
-        cancelArea(){
-            this.addFormVisible =  false
-            this.warehouseArea={}
+        cancelArea() {
+            this.addFormVisible = false
+            this.warehouseArea = {}
         },
-        addArea(){
+        addArea() {
             this.$confirm('此操作将新增库区, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
@@ -167,8 +197,8 @@ export default {
                         })
                     }
                 })
-                this.warehouseArea={}
-                this.addFormVisible =  false;
+                this.warehouseArea = {}
+                this.addFormVisible = false;
             }).catch(() => {
                 this.$message({
                     type: 'info',

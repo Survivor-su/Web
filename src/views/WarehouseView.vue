@@ -2,7 +2,12 @@
     <!-- template只允许一个根标签 -->
     <div>
 
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item>仓库管理</el-breadcrumb-item>
+            <el-breadcrumb-item>仓库信息</el-breadcrumb-item>
+        </el-breadcrumb>
 
+        <el-divider></el-divider>
         <el-row>
             <el-col :span="2">
                 <el-button type="primary" @click="toAdd()">添加</el-button>
@@ -40,7 +45,7 @@
                     </el-button>
                 </template>
             </el-table-column>
-        </el-table>
+        </el-table> 
         <!--
              @size-change 每页显示数量发生变化时触发
              @current-change 当前页发生变化时触发
@@ -228,7 +233,7 @@ export default {
                             message: res.data.msg
                         })
                         console.log(this.pages)
-                        if (this.pages!=res.data.obj.pages) {
+                        if (this.pages != res.data.obj.pages) {
                             --this.page
                             this.initData()
                         }

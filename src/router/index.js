@@ -14,6 +14,11 @@ const routes = [
     path: '/warehousearea',
     name: 'warehousearea',//与index无关
     component: () => import('../views/WarehouseAreaView.vue')
+  },
+  {
+    path: '/material',
+    name: 'material',//与index无关
+    component: () => import('../views/MaterialView.vue')
   }
 ]
 

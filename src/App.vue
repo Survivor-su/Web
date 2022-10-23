@@ -10,7 +10,7 @@
       <el-container>
         <el-aside width="200px">
           <el-menu router default-active="2" class="el-menu-vertical-demo">
-            
+
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-s-home"></i>
@@ -19,6 +19,17 @@
               <el-menu-item-group>
                 <el-menu-item index="warehouse">仓库信息</el-menu-item>
                 <el-menu-item index="warehousearea">库区信息</el-menu-item>
+              </el-menu-item-group>
+            </el-submenu>
+
+            <el-submenu index="2">
+              <template slot="title">
+                <i class="el-icon-coin"></i>
+                <span>物料管理</span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item index="material">物料信息</el-menu-item>
+                <!-- <el-menu-item index="warehousearea">库区信息</el-menu-item> -->
               </el-menu-item-group>
             </el-submenu>
 
