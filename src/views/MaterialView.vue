@@ -8,7 +8,7 @@
         <el-divider></el-divider>
         <el-row>
             <el-col :span="2">
-                <el-button type="primary" @click="toAdd()">添加</el-button>
+                <el-button type="primary" @click="toAdd()">入库</el-button>
             </el-col>
             <el-col :span="10">
                 <div>
@@ -39,8 +39,9 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="操作">
+            <el-table-column label="操作"  width="230">
                 <template slot-scope="scope">
+                    <el-button size="mini" type="primary" @click="handleOutput(scope.$index, scope.row)">出库</el-button>
                     <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除
                     </el-button>
@@ -112,7 +113,7 @@
             <div slot="footer" class="dialog-footer">
                 <el-button @click="upform()">取 消</el-button>
                 <el-button v-show="updataShow" type="primary" @click="updata()">修 改</el-button>
-                <el-button v-show="insertShow" type="primary" @click="adddata()">添 加</el-button>
+                <el-button v-show="insertShow" type="primary" @click="adddata()">入 库</el-button>
             </div>
         </el-dialog>
 
@@ -176,7 +177,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.put("http://localhost:9090/material/", qs.stringify(this.form)).then(res => {
+                axios.put("http://localhost:9090/material", qs.stringify(this.form),{headers: { token: window.localStorage.getItem("token") }}).then(res => {
                     if (res.data.code == 0) {
                         this.$message({
                             type: 'success',
@@ -209,7 +210,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.post("http://localhost:9090/material/", qs.stringify(this.form)).then(res => {
+                axios.post("http://localhost:9090/material", qs.stringify(this.form),{headers: { token: window.localStorage.getItem("token") }}).then(res => {
                     if (res.data.code == 0) {
                         this.$message({
                             type: 'success',
@@ -245,6 +246,16 @@ export default {
             //     this.warehosue=res.data.list
             // })
         },
+         handleOutput(index, row) {
+            this.title = "物料出库"
+            this.dialogFormVisible = true
+            this.updataShow = true
+            this.insertShow = false
+            this.form = row
+            // axios.get("http://localhost:9090/warehouseArea").then(res=>{
+            //     this.warehosue=res.data.list
+            // })
+        },
         search() {
             this.initData()
         },
@@ -254,7 +265,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.delete("http://localhost:9090/material/" + row.id).then(res => {
+                axios.delete("http://localhost:9090/material/" + row.id,{headers: { token: window.localStorage.getItem("token") }}).then(res => {
                     if (res.data.code == 0) {
                         this.$message({
                             type: 'success',
@@ -281,12 +292,12 @@ export default {
             });
         },
         initData() {
-            axios.get("http://localhost:9090/materialPage", { params: { page: this.page, size: this.size, keyword: this.keyword } }).then(res => {
+            axios.get("http://localhost:9090/materialPage", { params: { page: this.page, size: this.size, keyword: this.keyword },headers: { token: window.localStorage.getItem("token") } }).then(res => {
                 this.tableData = res.data.obj.records
                 this.total = res.data.obj.total
                 this.pages = res.data.obj.pages
             })
-            axios.get("http://localhost:9090/warehouseArea").then(res => {
+            axios.get("http://localhost:9090/warehouseArea",{headers: { token: window.localStorage.getItem("token") }}).then(res => {
                 this.warehouseAreaList = res.data.list
             })
 

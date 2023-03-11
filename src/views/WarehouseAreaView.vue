@@ -38,7 +38,7 @@
             </el-table-column>
             <el-table-column prop="waStatus" label="库区状态">
                 <template slot-scope="scope">
-                    <el-tag class="ml-2" v-if="scope.row.waStatus==0" type="success">闲置中</el-tag>
+                    <el-tag class="ml-2" v-if="scope.row.waStatus == 0" type="success">闲置中</el-tag>
                     <el-tag class="ml-2" v-else type="danger">使用中</el-tag>
                 </template>
             </el-table-column>
@@ -47,11 +47,11 @@
             <el-table-column label="操作" width="180">
                 <template slot-scope="scope">
                     <el-button size="mini" type='primary' @click="handleUse(scope.$index, scope.row)"
-                        v-if="scope.row.waStatus==0">使用</el-button>
+                        v-if="scope.row.waStatus == 0">使用</el-button>
                     <el-button size="mini" type="warning" @click="handleEdit(scope.$index, scope.row)"
-                        v-if="scope.row.waStatus==1">编辑</el-button>
+                        v-if="scope.row.waStatus == 1">编辑</el-button>
                     <el-button size="mini" type="danger" @click="handleStop(scope.$index, scope.row)"
-                        v-if="scope.row.waStatus==1">停用</el-button>
+                        v-if="scope.row.waStatus == 1">停用</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -88,15 +88,15 @@
 
                 <el-form-item label="选择仓库" :label-width="formLabelWidth">
                     <el-select v-model="warehouseArea.whId" placeholder="请选择仓库">
-                        <el-option v-for="(o,i) in warehouseList" :label="o.whName" :value="o.whId"
-                            :disabled='o.whCapacity>o.waCapacity?false:true'>
+                        <el-option v-for="(o, i) in warehouseList" :label="o.whName" :value="o.whId"
+                            :disabled='o.whCapacity > o.waCapacity ? false : true'>
                             <span style="float: left">{{ o.whName }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <el-tag v-if="o.whCapacity-o.waCapacity>=o.whCapacity*0.7" type="success"
-                                style="float: right;  font-size: 13px">剩余容量:{{ o.whCapacity-o.waCapacity }}</el-tag>
-                            <el-tag v-else-if="o.whCapacity-o.waCapacity>=0" type="warning"
-                                style="float: right;  font-size: 13px">剩余容量:{{ o.whCapacity-o.waCapacity }}</el-tag>
+                            <el-tag v-if="o.whCapacity - o.waCapacity >= o.whCapacity * 0.7" type="success"
+                                style="float: right;  font-size: 13px">剩余容量:{{ o.whCapacity - o.waCapacity }}</el-tag>
+                            <el-tag v-else-if="o.whCapacity - o.waCapacity >= 0" type="warning"
+                                style="float: right;  font-size: 13px">剩余容量:{{ o.whCapacity - o.waCapacity }}</el-tag>
                             <el-tag v-else="o.whCapacity-o.waCapacity==0" style="float: right;  font-size: 13px">
-                                剩余容量:{{0}}</el-tag>
+                                剩余容量:{{ 0 }}</el-tag>
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -109,8 +109,8 @@
                     <el-input v-model="warehouseArea.waName" autocomplete="off" placeholder="请输入库区名称"></el-input>
                 </el-form-item>
                 <el-form-item label="库区容量" :label-width="formLabelWidth">
-                    <el-input-number :min="0" :step="100" v-for="o in warehouseList" v-if="o.whId==warehouseArea.whId"
-                        :max="o.whCapacity-o.waCapacity" v-model="warehouseArea.waCapacity" autocomplete="off">
+                    <el-input-number :min="0" :step="100" v-for="o in warehouseList" v-if="o.whId == warehouseArea.whId"
+                        :max="o.whCapacity - o.waCapacity" v-model="warehouseArea.waCapacity" autocomplete="off">
                     </el-input-number>
                 </el-form-item>
                 <!-- <el-form-item label="仓库可用容量" :label-width="formLabelWidth">
@@ -169,7 +169,7 @@ export default {
     methods: {
         toAdd() {
             this.addFormVisible = true
-            axios.get("http://localhost:9090/warehouseCapacity").then(res => {
+            axios.get("http://localhost:9090/warehouseCapacity",{headers: { token: window.localStorage.getItem("token") }}).then(res => {
                 this.warehouseList = res.data.list
             })
         },
@@ -183,7 +183,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.post("http://localhost:9090/warehouseArea", qs.stringify(this.warehouseArea)).then(res => {
+                axios.post("http://localhost:9090/warehouseArea", qs.stringify(this.warehouseArea),{headers: { token: window.localStorage.getItem("token") }}).then(res => {
                     if (res.data.code == 0) {
                         this.$message({
                             type: 'success',
@@ -207,7 +207,7 @@ export default {
             })
         },
         initData() {
-            axios.get("http://localhost:9090/warehouseAreaPage", { params: { page: this.page, size: this.size, keyword: this.keyword } }).then(res => {
+            axios.get("http://localhost:9090/warehouseAreaPage", { params: { page: this.page, size: this.size, keyword: this.keyword },headers:{token:window.localStorage.getItem("token")} }).then(res => {
                 console.log(res)
                 this.tableData = res.data.obj.records
                 this.total = res.data.obj.total
@@ -240,7 +240,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.put("http://localhost:9090/warehouseArea", qs.stringify(this.warehouseArea)).then(res => {
+                axios.put("http://localhost:9090/warehouseArea", qs.stringify(this.warehouseArea),{ headers: { token: window.localStorage.getItem("token") } } ).then(res => {
                     if (res.data.code == 0) {
                         this.$message({
                             type: 'success',
@@ -276,7 +276,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.put("http://localhost:9090/warehouseArea", qs.stringify({ waId: row.waId, waStatus: 0, waName: '', waNote: '' })).then(res => {
+                axios.put("http://localhost:9090/warehouseArea", qs.stringify({ waId: row.waId, waStatus: 0, waName: '', waNote: '' }),{headers: { token: window.localStorage.getItem("token") }}).then(res => {
                     if (res.data.code == 0) {
                         this.$message({
                             type: 'success',
@@ -306,7 +306,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.put("http://localhost:9090/warehouseArea", qs.stringify(this.warehouseArea)).then(res => {
+                axios.put("http://localhost:9090/warehouseArea", qs.stringify(this.warehouseArea),{headers: { token: window.localStorage.getItem("token") }}).then(res => {
                     if (res.data.code == 0) {
                         this.$message({
                             type: 'success',

@@ -157,7 +157,7 @@ export default {
 
         },
         adddata() {
-            axios.post("http://localhost:9090/warehouse", qs.stringify(this.form)).then(res => {
+            axios.post("http://localhost:9090/warehouse", qs.stringify(this.form),{headers:{token:window.localStorage.getItem("token")}}).then(res => {
                 // console.log(res)
                 if (res.data.code == 0) {
                     this.$message({
@@ -187,7 +187,7 @@ export default {
         },
         initData() {
             // axios.get("http://localhost:9090/warehousePage?page=" + this.page + "&size=" + this.size).then(res => {
-            axios.get("http://localhost:9090/warehousePage", { params: { page: this.page, size: this.size, keyword: this.keyword } }).then(res => {
+            axios.get("http://localhost:9090/warehousePage", { params: { page: this.page, size: this.size, keyword: this.keyword },headers:{token:window.localStorage.getItem("token")} }).then(res => {
                 this.tableData = res.data.obj.records
                 this.total = res.data.obj.total
                 this.pages = res.data.obj.pages
@@ -198,7 +198,7 @@ export default {
             // 使用qs工具将form对象中的数据解析为字符串后拼接到请求中
             // 1.导入qs工具 import qs from 'qs'
             // 2.调用qs.stringify(对象方法),会解析对象中的所有属性为一个字符串
-            axios.put("http://localhost:9090/warehouse", qs.stringify(this.form)).then(res => {
+            axios.put("http://localhost:9090/warehouse", qs.stringify(this.form),{headers:{token:window.localStorage.getItem("token")}}).then(res => {
                 // console.log(res)
                 if (res.data.code == 0) {
                     this.$message({
@@ -226,7 +226,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                axios.delete("http://localhost:9090/warehouse/" + row.whId).then(res => {
+                axios.delete("http://localhost:9090/warehouse/" + row.whId,{headers:{token:window.localStorage.getItem("token")}}).then(res => {
                     if (res.data.code == 0) {
                         this.$message({
                             type: 'success',
