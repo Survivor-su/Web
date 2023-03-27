@@ -33,12 +33,11 @@
             </el-table-column>
             <el-table-column prop="suId" label="操作管理员ID">
             </el-table-column>
-           
+
         </el-table>
 
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="page"
-            :page-sizes="[1, 5, 10, 15]" :page-size="size" layout="total, sizes, prev, pager, next, jumper"
-            :total="total">
+            :page-sizes="[1, 5, 10, 15]" :page-size="size" layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
     </div>
 </template>
@@ -56,8 +55,8 @@ export default {
             keyword: "",
             tableData: [],
             outputRecord: {
-                irId:'',
-                irTime:'',
+                irId: '',
+                irTime: '',
                 waId: "",
                 mId: "",
                 irCount: "",
@@ -67,7 +66,7 @@ export default {
     },
     methods: {
         initData() {
-            axios.get("http://localhost:9090/inputRecordPage", { params: { page: this.page, size: this.size, keyword: this.keyword },headers:{token:window.localStorage.getItem("token")} }).then(res => {
+            axios.get("http://localhost:9090/inputRecordPage", { params: { page: this.page, size: this.size, keyword: this.keyword }, headers: { token: window.localStorage.getItem("token") } }).then(res => {
                 console.log(res)
                 this.tableData = res.data.obj.records
                 this.total = res.data.obj.total
@@ -75,10 +74,16 @@ export default {
             })
         }, search() {
             this.initData()
+        }, 
+        handleSizeChange(val) {
+            this.size = val
+            this.initData()
+        },
+        handleCurrentChange(val) {
+            this.page = val
+            this.initData();
         },
     }
 }
 </script>
-<style>
-
-</style>
+<style></style>

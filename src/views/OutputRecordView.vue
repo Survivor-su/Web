@@ -23,7 +23,7 @@
         <el-table :data="tableData" stripe style="width: 100%">
             <el-table-column prop="orId" label="出库编号" width="180">
             </el-table-column>
-            <el-table-column prop="mId" label="物料编号">
+            <el-table-column prop="mid" label="物料编号">
             </el-table-column>
             <el-table-column prop="orCount" label="出库数量">
             </el-table-column>
@@ -31,7 +31,7 @@
             </el-table-column>
             <el-table-column prop="orTime" label="出库时间">
             </el-table-column>
-            <el-table-column prop="suName" label="操作管理员ID">
+            <el-table-column prop="suId" label="操作管理员ID">
             </el-table-column>
            
         </el-table>
@@ -67,7 +67,7 @@ export default {
     },
     methods: {
         initData() {
-            axios.get("http://localhost:9090/outputRcordPage", { params: { page: this.page, size: this.size, keyword: this.keyword },headers:{token:window.localStorage.getItem("token")} }).then(res => {
+            axios.get("http://localhost:9090/outputRecordPage", { params: { page: this.page, size: this.size, keyword: this.keyword },headers:{token:window.localStorage.getItem("token")} }).then(res => {
                 console.log(res)
                 this.tableData = res.data.obj.records
                 this.total = res.data.obj.total
@@ -75,6 +75,14 @@ export default {
             })
         }, search() {
             this.initData()
+        },
+        handleSizeChange(val) {
+            this.size = val
+            this.initData()
+        },
+        handleCurrentChange(val) {
+            this.page = val
+            this.initData();
         },
     }
 }
