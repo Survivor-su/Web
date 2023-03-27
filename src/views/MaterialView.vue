@@ -12,7 +12,7 @@
             </el-col>
             <el-col :span="10">
                 <div>
-                    <el-input placeholder="请输入仓库关键名" v-model="keyword">
+                    <el-input placeholder="请输入物料名称关键名" v-model="keyword">
                         <el-button slot="append" @click="search()" icon="el-icon-search"></el-button>
                     </el-input>
                 </div>
@@ -293,6 +293,7 @@ export default {
         },
         initData() {
             axios.get("http://localhost:9090/materialPage", { params: { page: this.page, size: this.size, keyword: this.keyword },headers: { token: window.localStorage.getItem("token") } }).then(res => {
+                console.log(res)
                 this.tableData = res.data.obj.records
                 this.total = res.data.obj.total
                 this.pages = res.data.obj.pages

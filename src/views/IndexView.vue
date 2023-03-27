@@ -40,7 +40,8 @@
               </template>
               <el-menu-item-group>
                 <el-menu-item index="material">物料信息</el-menu-item>
-                <!-- <el-menu-item index="warehousearea">库区信息</el-menu-item> -->
+                <el-menu-item index="output">出库数据</el-menu-item>
+                <el-menu-item index="input">入库数据</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
 

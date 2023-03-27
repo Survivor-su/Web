@@ -14,7 +14,7 @@
             </el-col>
             <el-col :span="10">
                 <div>
-                    <el-input placeholder="请输入仓库关键名" v-model="keyword">
+                    <el-input placeholder="请输入库区名关键名" v-model="keyword">
                         <el-button slot="append" @click="search()" icon="el-icon-search"></el-button>
                     </el-input>
                 </div>

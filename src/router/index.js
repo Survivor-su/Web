@@ -37,6 +37,16 @@ const routes = [
         name: 'capacity',//与index无关
         component: () => import('../views/CapacityOfWhView.vue')
       },
+      {
+        path: '/input',
+        name: 'input',//与index无关
+        component: () => import('../views/InputRecordView.vue')
+      },
+      {
+        path: '/output',
+        name: 'output',//与index无关
+        component: () => import('../views/OutputRecordView.vue')
+      },
      
     ]
   },

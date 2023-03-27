@@ -48,12 +48,12 @@ export default {
                     })
                     window.localStorage.setItem("token", res.data.obj)
                     this.$router.replace("/index")
-                } else[
+                } else{
                     this.$message({
                         type: 'error',
                         message: res.data.msg
                     })
-                ]
+                }
             })
 
         },
